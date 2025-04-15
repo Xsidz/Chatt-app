@@ -4,10 +4,22 @@ import messageRoute from "./routes/message.route.js";
 import dotenv from "dotenv";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
+import cors from "cors"
+
 
 const app = express();
-app.use(express.json());
 app.use(cookieParser());
+// temporary solution for CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: "GET, POST, PUT, DELETE, OPTIONS", // Include PUT
+    allowedHeaders: "Content-Type, Authorization",
+    credentials: true, // Allow cookies to be sent
+  })
+);
+app.use(express.json({ limit: "10mb" })); // Increase limit
+app.use(express.urlencoded({ limit: "10mb", extended: true })); 
 
 
 dotenv.config();
